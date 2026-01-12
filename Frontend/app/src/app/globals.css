@@ -28,6 +28,19 @@ html.dark {
   --border: #334155;
 }
 
+/* Theme-aware logo switching */
+.logo-dark {
+  display: none !important;
+}
+
+html.dark .logo-dark {
+  display: block !important;
+}
+
+html.dark .logo-light {
+  display: none !important;
+}
+
 body {
   background-color: var(--background);
   color: var(--text-main);

@@ -9,14 +9,7 @@ import { MenuItem } from '@/types';
 import { Loader2, SearchX } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-// SWR Fetcher wrapper
-const fetchER = async (url: string) => {
-    // We parse the URL to extract params (this is a bit hacky because key is the URL string)
-    // Actually, fetcher just runs the function.
-    // Better: use arguments.
-    // We'll just define specific fetcher for our api client.
-    return [];
-};
+// SWR Fetcher is defined inline in the useSWR call
 
 // Better SWR usage:
 // key: ['menuItems', params_object]
@@ -102,7 +95,7 @@ export default function MenuGrid() {
                 className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 lg:gap-8 pb-32"
             >
                 <AnimatePresence mode="popLayout">
-                    {items.map((item) => (
+                    {items.map((item, index) => (
                         <motion.div
                             key={item.id}
                             layout
@@ -111,7 +104,11 @@ export default function MenuGrid() {
                             exit={{ opacity: 0, scale: 0.9, y: 10 }}
                             transition={{ type: "spring", bounce: 0.3, duration: 0.5 }}
                         >
-                            <MenuItemCard item={item} onItemClick={setSelectedItem} />
+                            <MenuItemCard
+                                item={item}
+                                onItemClick={setSelectedItem}
+                                priority={index < 4}
+                            />
                         </motion.div>
                     ))}
                 </AnimatePresence>

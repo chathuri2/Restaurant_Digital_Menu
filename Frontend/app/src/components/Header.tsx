@@ -55,10 +55,19 @@ export default function Header() {
                     <div className="flex items-center gap-2">
                         <div className="relative w-12 h-12 md:w-16 md:h-16">
                             <Image
-                                src="/assets/logo.png"
+                                src="/assets/logo_light.png"
                                 alt="Delicious Bites Logo"
                                 fill
-                                className="object-contain"
+                                sizes="(max-width: 768px) 48px, 64px"
+                                className="object-contain logo-light"
+                                priority
+                            />
+                            <Image
+                                src="/assets/logo_dark.png"
+                                alt="Delicious Bites Logo"
+                                fill
+                                sizes="(max-width: 768px) 48px, 64px"
+                                className="object-contain logo-dark"
                                 priority
                             />
                         </div>
