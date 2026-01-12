@@ -17,17 +17,21 @@ export const metadata: Metadata = {
   description: "Browse our delicious menu of appetizers, mains, desserts, and beverages.",
 };
 
+import { ThemeProvider } from "@/lib/ThemeProvider";
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

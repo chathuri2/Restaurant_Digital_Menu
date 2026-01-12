@@ -1,7 +1,7 @@
-
 import Header from "@/components/Header";
 import CategoryFilter from "@/components/CategoryFilter";
 import MenuGrid from "@/components/MenuGrid";
+import Hero from "@/components/Hero";
 import { api } from "@/lib/api";
 import { Category } from "@/types";
 import { Suspense } from "react";
@@ -15,29 +15,28 @@ export default async function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50/50">
-      <Suspense fallback={<div className="h-16 bg-white animate-pulse" />}>
+    <main className="min-h-screen bg-background dark:bg-slate-950 transition-colors duration-500">
+      <Suspense fallback={<div className="h-20 bg-white dark:bg-slate-900 animate-pulse" />}>
         <Header />
       </Suspense>
 
       <div className="container mx-auto px-4 md:px-6">
-        {/* Banner / Hero Section (Optional, but adds "Wow" factor) */}
-        <div className="py-8 md:py-12 ">
-          <h2 className="text-5xl text-center md:text-5xl font-extrabold text-gray-900 mb-2">
-            Our <span className="text-primary">Menu</span>
-          </h2>
-          <p className="text-gray-500 max-w-xl text-lg text-center mx-auto">
-            Discover our culinary creations. From fresh appetizers to delightful desserts.
-          </p>
-        </div>
+        {/* Banner / Hero Section*/}
+        <Hero />
 
-        <div className="sticky top-[80px] z-40 bg-gray-50/95 backdrop-blur-sm -mx-4 px-4 md:mx-0 md:px-0 mb-6">
-          <Suspense fallback={<div className="h-12 bg-gray-100 rounded-full animate-pulse" />}>
+        <div className="sticky top-[80px] md:top-[96px] z-40 bg-background/95 dark:bg-slate-950/95 backdrop-blur-md -mx-4 px-4 md:mx-0 md:px-0 mb-8 py-2 border-b border-transparent dark:border-slate-800/50">
+          <Suspense fallback={<div className="h-14 bg-gray-100 dark:bg-slate-800 rounded-full animate-pulse" />}>
             <CategoryFilter categories={categories} />
           </Suspense>
         </div>
 
-        <Suspense fallback={<div className="grid grid-cols-1 md:grid-cols-4 gap-6"><div className="h-64 bg-gray-200 rounded-2xl animate-pulse" /></div>}>
+        <Suspense fallback={
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[...Array(8)].map((_, i) => (
+              <div key={i} className="h-80 bg-gray-100 dark:bg-slate-800 rounded-[2rem] animate-pulse" />
+            ))}
+          </div>
+        }>
           <MenuGrid />
         </Suspense>
       </div>
