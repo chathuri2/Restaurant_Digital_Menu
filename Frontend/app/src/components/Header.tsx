@@ -84,6 +84,8 @@ export default function Header() {
                     </div>
                     <input
                         type="text"
+                        id="search-menu"
+                        name="q"
                         placeholder="Search your favourite..."
                         className="block w-full pl-10 pr-10 py-2.5 md:py-3 border border-gray-200 dark:border-slate-700 rounded-2xl bg-gray-50 dark:bg-slate-800/50 text-gray-900 dark:text-white placeholder:text-gray-400 focus:bg-white dark:focus:bg-slate-800 focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all shadow-sm outline-none text-sm md:text-base"
                         defaultValue={searchParams.get('q')?.toString()}
