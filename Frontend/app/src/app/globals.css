@@ -47,7 +47,7 @@ body {
   transition: background-color var(--transition-speed), color var(--transition-speed), border-color var(--transition-speed);
 }
 
-@theme inline {
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-surface: var(--surface);

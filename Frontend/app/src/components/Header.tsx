@@ -1,9 +1,8 @@
 'use client';
 
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
-import { Search, X, ShoppingCart, Sun, Moon } from 'lucide-react';
+import { Search, X, ShoppingCart } from 'lucide-react';
 import Image from 'next/image';
-import { useTheme } from '@/lib/ThemeProvider';
 import { cn } from '@/lib/utils';
 
 /**
@@ -18,7 +17,6 @@ export default function Header() {
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const { replace } = useRouter();
-    const { theme, toggleTheme } = useTheme();
 
     /**
      * Updates the URL search parameters based on the search input.
@@ -77,14 +75,6 @@ export default function Header() {
                         </div>
                     </div>
 
-                    {/* Mobile Theme Toggle (visible only on small screens next to logo) */}
-                    <button
-                        onClick={(e) => toggleTheme(e)}
-                        className="md:hidden p-2.5 bg-gray-100 dark:bg-slate-800 rounded-full text-gray-600 dark:text-gray-300 transition-colors"
-                        aria-label="Toggle theme"
-                    >
-                        {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
-                    </button>
                 </div>
 
                 {/* Search Bar */}
@@ -111,13 +101,6 @@ export default function Header() {
 
                 {/* Desktop Actions & Info */}
                 <div className="hidden md:flex items-center gap-4">
-                    <button
-                        onClick={(e) => toggleTheme(e)}
-                        className="p-3 bg-gray-100 dark:bg-slate-800 rounded-full text-gray-600 dark:text-gray-300 hover:bg-primary/10 hover:text-primary transition-all duration-300"
-                        title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
-                    >
-                        {theme === 'light' ? <Moon size={22} /> : <Sun size={22} />}
-                    </button>
 
                     <div className="text-right border-l border-gray-200 dark:border-slate-700 pl-4">
                         <p className="text-[10px] uppercase tracking-tighter text-gray-500 dark:text-gray-400 font-bold">Order Now</p>

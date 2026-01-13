@@ -15,58 +15,33 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const [theme, setTheme] = useState<Theme>('light');
     const [mounted, setMounted] = useState(false);
 
-    // Initial mount: load theme from localStorage or system
     useEffect(() => {
-        const savedTheme = localStorage.getItem('theme-pref') as Theme | null;
-        // Default to 'light' regardless of system theme if no saved preference exists
-        const initialTheme = savedTheme || 'light';
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
-        console.log('[ThemeProvider] Mounting. Initial:', initialTheme);
-        setTheme(initialTheme);
+        const handleChange = () => {
+            const isDark = mediaQuery.matches;
+            setTheme(isDark ? 'dark' : 'light');
+            const root = window.document.documentElement;
+            if (isDark) {
+                root.classList.add('dark');
+            } else {
+                root.classList.remove('dark');
+            }
+        };
+
+        // Initial check
+        handleChange();
         setMounted(true);
+
+        // Listen for changes
+        mediaQuery.addEventListener('change', handleChange);
+        return () => mediaQuery.removeEventListener('change', handleChange);
     }, []);
 
-    // Sync theme to DOM and localStorage whenever it changes
-    useEffect(() => {
-        if (!mounted) return;
-
-        const root = window.document.documentElement;
-        console.log('[ThemeProvider] Syncing DOM to:', theme);
-
-        if (theme === 'dark') {
-            root.classList.add('dark');
-        } else {
-            root.classList.remove('dark');
-        }
-
-        localStorage.setItem('theme-pref', theme);
-    }, [theme, mounted]);
-
-    const [lastToggle, setLastToggle] = useState(0);
-
-    const toggleTheme = (e?: React.MouseEvent) => {
-        if (e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
-
-        const now = Date.now();
-        if (now - lastToggle < 500) {
-            console.log('[ThemeProvider] Ignoring double toggle (rate limit)');
-            return;
-        }
-        setLastToggle(now);
-
-        setTheme(prev => {
-            const next = prev === 'light' ? 'dark' : 'light';
-            console.log('[ThemeProvider] Toggling:', prev, '->', next);
-            return next;
-        });
+    const toggleTheme = () => {
+        console.warn('[ThemeProvider] Manual toggle is disabled. Theme follows system settings.');
     };
 
-    // To prevent hydration mismatch, we can optionally return null or a loader
-    // but usually, letting React render with 'light' and then syncing is better
-    // if we use suppressHydrationWarning.
     return (
         <ThemeContext.Provider value={{ theme, toggleTheme }}>
             {children}
