@@ -50,8 +50,8 @@ export default function Header() {
             <div className="container mx-auto px-4 py-3 md:py-4 flex flex-col md:flex-row items-center justify-between gap-4">
                 {/* Logo & Brand */}
                 <div className="flex items-center justify-between w-full md:w-auto">
-                    <div className="flex items-center gap-2">
-                        <div className="relative w-12 h-12 md:w-16 md:h-16">
+                    <div className="flex items-center gap-3">
+                        <div className="relative w-13 h-13 md:w-16 md:h-16">
                             <Image
                                 src="/assets/logo_light.png"
                                 alt="Delicious Bites Logo"
