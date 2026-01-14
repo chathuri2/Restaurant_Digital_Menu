@@ -9,11 +9,6 @@ interface CategoryFilterProps {
     categories: Category[];
 }
 
-/**
- * CategoryFilter component allows users to filter menu items by category.
- * Features smooth sliding animations using framer-motion and a touch-friendly 
- * horizontal scroll layout.
- */
 export default function CategoryFilter({ categories }: CategoryFilterProps) {
     const searchParams = useSearchParams();
     const pathname = usePathname();
@@ -21,10 +16,6 @@ export default function CategoryFilter({ categories }: CategoryFilterProps) {
 
     const currentCategory = searchParams.get('category');
 
-    /**
-     * Updates the URL category parameter and handles navigation.
-     * @param categoryId ID of the selected category, or null for "View All"
-     */
     const handleCategoryClick = (categoryId: string | null) => {
         const params = new URLSearchParams(searchParams);
         if (categoryId) {
@@ -38,7 +29,6 @@ export default function CategoryFilter({ categories }: CategoryFilterProps) {
     return (
         <div className="py-4 md:py-6 overflow-x-auto no-scrollbar scroll-smooth">
             <div className="flex items-center gap-2 md:gap-4 min-w-max px-4">
-                {/* "View All" Button */}
                 <button
                     onClick={() => handleCategoryClick(null)}
                     className={cn(
@@ -59,7 +49,6 @@ export default function CategoryFilter({ categories }: CategoryFilterProps) {
                     <span className="relative z-10 text-shadow-sm">View All</span>
                 </button>
 
-                {/* Individual Category Buttons */}
                 {categories.map((category) => (
                     <button
                         key={category.id}

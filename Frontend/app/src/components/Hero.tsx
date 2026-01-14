@@ -4,10 +4,6 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
 import { useRef } from 'react';
 
-/**
- * Hero component for the landing section of the menu.
- * Uses framer-motion for entrance and scroll-linked parallax animations.
- */
 export default function Hero() {
     const containerRef = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({
@@ -15,10 +11,7 @@ export default function Hero() {
         offset: ["start start", "end start"]
     });
 
-    // Parallax background image: moves slower than scroll
     const yBg = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-
-    // Content animation: fades and scales down slightly as you scroll past
     const opacityContent = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
     const scaleContent = useTransform(scrollYProgress, [0, 0.7], [1, 0.95]);
     const yContent = useTransform(scrollYProgress, [0, 1], ["0%", "10%"]);
@@ -28,7 +21,6 @@ export default function Hero() {
             ref={containerRef}
             className="relative overflow-hidden rounded-[2.5rem] mb-12 group h-[350px] md:h-[450px]"
         >
-            {/* Background Image Container */}
             <motion.div
                 style={{ y: yBg }}
                 className="absolute inset-0 z-0 h-[120%] -top-[10%]"
@@ -40,7 +32,6 @@ export default function Hero() {
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
                     priority
                 />
-                {/* Transparent Overlay */}
                 <div className="absolute inset-0 bg-black/50 backdrop-blur-[5px]" />
             </motion.div>
 

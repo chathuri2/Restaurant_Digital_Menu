@@ -346,7 +346,7 @@
       "description": "Creamy arborio rice with wild mushrooms and truffle oil",
       "price": 16.49,
       "category": "mains",
-      "image": "https://images.unsplash.com/photo-1633964913295-ceb43826d2e0?w=800",
+      "image": "https://images.unsplash.com/photo-1476124369491-e7addf5db371",
       "dietary": [
         "vegetarian",
         "gluten-free"
@@ -423,7 +423,7 @@
       "description": "Sizzling chicken or beef with peppers and onions, served with tortillas",
       "price": 16.99,
       "category": "mains",
-      "image": "https://images.unsplash.com/photo-1599974815066-2a42c4c255b2",
+      "image": "https://images.unsplash.com/photo-1504544750208-dc0358e63f7f",
       "dietary": [],
       "popular": true,
       "spicyLevel": 2,
@@ -491,7 +491,7 @@
       "description": "Creamy cheesecake with berry compote",
       "price": 6.49,
       "category": "desserts",
-      "image": "https://images.unsplash.com/photo-1533134242-d89e0c1b98f6",
+      "image": "https://images.unsplash.com/photo-1508737027454-e6454ef45afd",
       "dietary": [
         "vegetarian"
       ],

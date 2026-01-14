@@ -3,9 +3,11 @@
 import { MenuItem } from "@/types";
 import { X, Flame } from 'lucide-react';
 import Image from "next/image";
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect, useMemo } from "react";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { useLockBodyScroll } from "@/hooks/useLockBodyScroll";
+import { AVAILABLE_EXTRAS, SPICE_LEVELS, PORTION_SIZES } from "@/lib/constants";
 
 interface ItemDetailModalProps {
     item: MenuItem | null;
@@ -16,24 +18,13 @@ interface ItemDetailModalProps {
 type SpiceLevel = 0 | 1 | 2 | 3;
 type Size = 'regular' | 'large';
 
-interface Extra {
-    id: string;
-    name: string;
-    price: number;
-}
-
-const AVAILABLE_EXTRAS: Extra[] = [
-    { id: 'parmesan', name: 'Extra Parmesan', price: 2.00 },
-    { id: 'avocado', name: 'Avocado', price: 3.00 },
-    { id: 'croutons', name: 'Extra Croutons', price: 1.00 },
-];
-
 export default function ItemDetailModal({ item, isOpen, onClose }: ItemDetailModalProps) {
     const [spiceLevel, setSpiceLevel] = useState<SpiceLevel>(0);
     const [size, setSize] = useState<Size>('regular');
     const [selectedExtras, setSelectedExtras] = useState<string[]>([]);
 
-    // Reset state when item changes
+    useLockBodyScroll(isOpen);
+
     useEffect(() => {
         if (item) {
             setSpiceLevel(item.spicyLevel as SpiceLevel);
@@ -42,17 +33,16 @@ export default function ItemDetailModal({ item, isOpen, onClose }: ItemDetailMod
         }
     }, [item]);
 
-    // Prevent body scroll when modal is open
-    useEffect(() => {
-        if (isOpen) {
-            document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = 'unset';
-        }
-        return () => {
-            document.body.style.overflow = 'unset';
-        };
-    }, [isOpen]);
+    const total = useMemo(() => {
+        if (!item) return 0;
+        let t = item.price;
+        if (size === 'large') t += 3.00;
+        selectedExtras.forEach(extraId => {
+            const extra = AVAILABLE_EXTRAS.find(e => e.id === extraId);
+            if (extra) t += extra.price;
+        });
+        return t.toFixed(2);
+    }, [item, size, selectedExtras]);
 
     if (!item || !isOpen) return null;
 
@@ -64,29 +54,12 @@ export default function ItemDetailModal({ item, isOpen, onClose }: ItemDetailMod
         );
     };
 
-    const calculateTotal = () => {
-        let total = item.price;
-        if (size === 'large') total += 3.00;
-        selectedExtras.forEach(extraId => {
-            const extra = AVAILABLE_EXTRAS.find(e => e.id === extraId);
-            if (extra) total += extra.price;
-        });
-        return total.toFixed(2);
-    };
-
-    const handleBackdropClick = (e: React.MouseEvent) => {
-        if (e.target === e.currentTarget) {
-            onClose();
-        }
-    };
-
     return (
         <div
             className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-md animate-in fade-in duration-300 p-4"
-            onClick={handleBackdropClick}
+            onClick={(e) => e.target === e.currentTarget && onClose()}
         >
             <div className="relative w-full max-w-5xl bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-400 border border-white/20 dark:border-slate-800">
-                {/* Close Button */}
                 <button
                     onClick={onClose}
                     className="absolute top-6 right-6 z-20 p-2.5 bg-white/90 dark:bg-slate-800/90 hover:bg-white dark:hover:bg-slate-700 text-gray-900 dark:text-white rounded-full transition-all shadow-xl active:scale-95 border border-gray-100 dark:border-slate-700"
@@ -96,7 +69,6 @@ export default function ItemDetailModal({ item, isOpen, onClose }: ItemDetailMod
                 </button>
 
                 <div className="grid md:grid-cols-2 gap-0">
-                    {/* Left Side - Image with Dynamic Background */}
                     <div className="relative flex items-center justify-center p-8 md:p-12 bg-gray-50 dark:bg-slate-800/30 overflow-hidden">
                         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-primary/5 dark:from-primary/5" />
                         <div className="relative w-full aspect-square max-w-sm">
@@ -116,10 +88,8 @@ export default function ItemDetailModal({ item, isOpen, onClose }: ItemDetailMod
                         </div>
                     </div>
 
-                    {/* Right Side - Details */}
                     <div className="flex flex-col p-8 md:p-12 max-h-[90vh] overflow-y-auto no-scrollbar">
                         <div className="space-y-8">
-                            {/* Title & Badge */}
                             <div>
                                 <div className="flex flex-wrap items-center gap-3 mb-3">
                                     <h2 className="text-3xl md:text-4xl font-black text-gray-900 dark:text-white tracking-tight">{item.name}</h2>
@@ -134,24 +104,18 @@ export default function ItemDetailModal({ item, isOpen, onClose }: ItemDetailMod
                                 <p className="text-4xl font-black text-primary">${item.price.toFixed(2)}</p>
                             </div>
 
-                            {/* Description */}
                             <p className="text-gray-500 dark:text-gray-400 text-base leading-relaxed font-medium">
                                 {item.description}
                             </p>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                {/* Spice Level */}
                                 <div>
                                     <h3 className="text-sm font-black text-gray-900 dark:text-white uppercase tracking-widest mb-4 flex items-center gap-2">
                                         <Flame className="w-4 h-4 text-primary" />
                                         Spice Level
                                     </h3>
                                     <div className="grid grid-cols-3 gap-2">
-                                        {[
-                                            { level: 0, label: 'Low' },
-                                            { level: 1, label: 'Med' },
-                                            { level: 2, label: 'Hot' },
-                                        ].map(({ level, label }) => (
+                                        {SPICE_LEVELS.map(({ level, label }) => (
                                             <button
                                                 key={level}
                                                 onClick={() => setSpiceLevel(level as SpiceLevel)}
@@ -168,14 +132,10 @@ export default function ItemDetailModal({ item, isOpen, onClose }: ItemDetailMod
                                     </div>
                                 </div>
 
-                                {/* Size Selection */}
                                 <div>
                                     <h3 className="text-sm font-black text-gray-900 dark:text-white uppercase tracking-widest mb-4">Portion Size</h3>
                                     <div className="grid grid-cols-2 gap-2">
-                                        {[
-                                            { value: 'regular', label: 'Regular' },
-                                            { value: 'large', label: 'Large' },
-                                        ].map(({ value, label }) => (
+                                        {PORTION_SIZES.map(({ value, label }) => (
                                             <button
                                                 key={value}
                                                 onClick={() => setSize(value as Size)}
@@ -193,7 +153,6 @@ export default function ItemDetailModal({ item, isOpen, onClose }: ItemDetailMod
                                 </div>
                             </div>
 
-                            {/* Extras */}
                             <div>
                                 <h3 className="text-sm font-black text-gray-900 dark:text-white uppercase tracking-widest mb-4">Add Extras</h3>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -218,11 +177,10 @@ export default function ItemDetailModal({ item, isOpen, onClose }: ItemDetailMod
                                 </div>
                             </div>
 
-                            {/* Add to Cart Button */}
                             <button className="relative w-full bg-primary hover:bg-primary/90 text-white font-black py-5 rounded-2xl transition-all shadow-xl shadow-primary/30 active:scale-[0.98] text-xl flex items-center justify-center gap-3 group">
                                 <span>Add to Order</span>
                                 <span className="w-1.5 h-1.5 rounded-full bg-white/50" />
-                                <span>${calculateTotal()}</span>
+                                <span>${total}</span>
                                 <div className="absolute inset-x-0 bottom-0 h-1 bg-black/10 rounded-b-2xl group-active:h-0 transition-all" />
                             </button>
                         </div>

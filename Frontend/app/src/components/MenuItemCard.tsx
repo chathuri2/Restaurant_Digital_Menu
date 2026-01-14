@@ -11,17 +11,12 @@ interface MenuItemCardProps {
     priority?: boolean;
 }
 
-/**
- * MenuItemCard displays a single menu item with its image, tags, 
- * price, and interactive elements.
- */
 export default function MenuItemCard({ item, onItemClick, priority }: MenuItemCardProps) {
     return (
         <div
             onClick={() => onItemClick?.(item)}
             className="group bg-white dark:bg-slate-800 rounded-3xl shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 overflow-hidden border border-gray-100 dark:border-slate-700/50 flex flex-col h-full cursor-pointer"
         >
-            {/* Image Container with Badges */}
             <div className="relative h-56 w-full overflow-hidden bg-gray-100 dark:bg-slate-900">
                 <Image
                     src={item.image}
@@ -32,14 +27,12 @@ export default function MenuItemCard({ item, onItemClick, priority }: MenuItemCa
                     priority={priority}
                 />
 
-                {/* Popular Badge */}
                 {item.popular && (
                     <div className="absolute top-4 left-4 bg-secondary text-[10px] font-black px-3 py-1.5 rounded-full shadow-lg text-black z-10 flex items-center gap-1 border border-white/20">
                         <span className="mb-0.5">★</span> POPULAR
                     </div>
                 )}
 
-                {/* Dietary Tags */}
                 <div className="absolute top-4 right-4 flex flex-col gap-1.5 items-end z-10">
                     {item.dietary.map(tag => (
                         <span key={tag} className={cn(
@@ -54,11 +47,9 @@ export default function MenuItemCard({ item, onItemClick, priority }: MenuItemCa
                     ))}
                 </div>
 
-                {/* Image Overlay Gradient */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             </div>
 
-            {/* Item Content */}
             <div className="p-6 flex flex-col flex-grow">
                 <div className="flex justify-between items-start mb-3">
                     <h3 className="font-extrabold text-xl text-gray-900 dark:text-white line-clamp-1 group-hover:text-primary transition-colors duration-300">
@@ -73,7 +64,6 @@ export default function MenuItemCard({ item, onItemClick, priority }: MenuItemCa
                     {item.description}
                 </p>
 
-                {/* Footer Actions & Meta */}
                 <div className="flex items-center justify-between pt-5 border-t border-gray-50 dark:border-slate-700/50 mt-auto">
                     <div className="flex items-center gap-4 text-xs font-bold">
                         {item.spicyLevel > 0 && (

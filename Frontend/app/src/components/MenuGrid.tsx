@@ -9,18 +9,14 @@ import { MenuItem } from '@/types';
 import { Loader2, SearchX } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-// SWR Fetcher is defined inline in the useSWR call
 
-// Better SWR usage:
-// key: ['menuItems', params_object]
+
+
+
 
 import { motion, AnimatePresence } from 'framer-motion';
 
-/**
- * MenuGrid component fetches and displays the list of menu items.
- * It uses SWR for data fetching and framer-motion for smooth entrance 
- * and filtering animations.
- */
+
 export default function MenuGrid() {
     const searchParams = useSearchParams();
 
